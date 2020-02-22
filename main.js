@@ -9,7 +9,7 @@ var sensor = require("node-dht-sensor");
 
 
 
-setInterval(function(){logIt();}, 5000);
+//setInterval(function(){logIt();}, 5000);
 
 setInterval(function(){insertData("airSensor");}, 60000);
 
