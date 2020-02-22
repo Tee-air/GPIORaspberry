@@ -4,7 +4,7 @@ var app = express();
 
 //console.log('hello wordl');
 
-var sensor = require("node-dht-sensor");
+//var sensor = require("node-dht-sensor");
 
 
 setInterval(function(){logIt();}, 5000);
@@ -13,12 +13,12 @@ setInterval(function(){logIt();}, 5000);
 
 
 function logIt (){
-	sensor.read(11, 2, function(err, temperature, humidity){
+	//sensor.read(11, 2, function(err, temperature, humidity){
 
 		if(!err){
-			console.log('temp: ' + temperature + ', humidity: ' + humidity + '%');
+			//console.log('temp: ' + temperature + ', humidity: ' + humidity + '%');
 		}
-	});
+	//});
 }
 
 

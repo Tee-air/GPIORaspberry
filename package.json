@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "node-dht-sensor": "^0.4.1"
+    "node-dht-sensor": "^0.4.1",
+    "pouchdb": "^7.2.1"
   }
 }
