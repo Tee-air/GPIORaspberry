@@ -11,7 +11,7 @@ var sensor = require("node-dht-sensor");
 
 setInterval(function(){logIt();}, 5000);
 
-//setInterval(function(){insertData("airSensor");}, 60000);
+setInterval(function(){insertData("airSensor");}, 60000);
 
 
 function logIt (){
@@ -46,7 +46,7 @@ function insertData(sensorType){
 			"humidity": humidity,
 			"jour": today.getDay(),
 			"minute": today.getMinutes()
-			}
+			};
 
 			db.put(doc);
 		}catch(err){
@@ -56,7 +56,7 @@ function insertData(sensorType){
 	
 }
 
-insertData("airSensor");
+//insertData("airSensor");
 
 
 
