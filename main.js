@@ -36,7 +36,7 @@ function insertData(sensorType){
 		console.log("inserting");
 			try{
 			var today = new Date();
-			var time = today.getFullYear()+'_'+(today.getMonth()+1) + "_" + today.getMinutes();
+			var time = today.getFullYear()+'_'+(today.getMonth()+1) + "_"+ today.getHours() +"_" + today.getMinutes();
 			var db = new PouchDB('http://127.0.0.1:5984/sensor_data');
 			var doc = {
 			"_id": time, 
@@ -44,6 +44,7 @@ function insertData(sensorType){
 			"temp": temperature,
 			"humidity": humidity,
 			"jour": today.getDay(),
+			"heure": today.getHours(),
 			"minute": today.getMinutes()
 			};
 
