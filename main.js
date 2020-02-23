@@ -11,7 +11,7 @@ var sensor = require("node-dht-sensor");
 
 //setInterval(function(){logIt();}, 5000);
 
-setInterval(function(){insertData("airSensor");}, 6000);
+setInterval(function(){insertData("airSensor");}, 60000);
 
 
 function logIt (){
@@ -34,7 +34,7 @@ function insertData(sensorType){
 
 	sensor.read(11, 2, function(err, temperature, humidity){
 		console.log("inserting");
-			
+			try{
 			var today = new Date();
 			var time = today.getFullYear()+'_'+(today.getMonth()+1) + "_" + today.getMinutes();
 			var db = new PouchDB('http://127.0.0.1:5984/sensor_data');
@@ -48,6 +48,9 @@ function insertData(sensorType){
 			};
 
 			db.put(doc);
+		}catch(err){
+			throw err;
+		}
 	});
 	
 }
