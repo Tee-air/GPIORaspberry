@@ -88,7 +88,7 @@ function getValueSensor(sensorType) {
 }
 
 
-//readSensor2();
+readSensor2();
 //console.logt(getValueSensor("groundSensor"));
 
 //app.listen(8081);
