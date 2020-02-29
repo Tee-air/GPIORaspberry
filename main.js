@@ -48,9 +48,10 @@ function insertData(sensorType) {
 
 
 
-function readSensor2() {
+function isTheSoilWet() {
 	const raspi = require('raspi');
 	const gpio = require('raspi-gpio');
+	let result;
 
 
 	raspi.init(() => {
@@ -58,8 +59,13 @@ function readSensor2() {
 		const input = new gpio.DigitalInput({
 			pin: 7
 		});
+		if (input.value === 1) {
+			result = true;
+		} else {
+			result = false;
+		}
 
-		console.log(input.value);
+		console.log(result);
 	});
 }
 
@@ -86,8 +92,7 @@ function getValueSensor(sensorType) {
 	}
 }
 
-
-readSensor2();
+isTheSoilWet()
 //console.logt(getValueSensor("groundSensor"));
 
 //app.listen(8081);
