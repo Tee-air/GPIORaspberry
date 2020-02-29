@@ -1,65 +1,73 @@
-var express = require ('express');
+var express = require('express');
+var PouchDB = require('pouchdb');
+//Module a 
+var sensor = require('node-dht-sensor');
+var sensorManager = require('Managers/manageSensor.js');
+var gpiop = require('rpi-gpio').promise;
 
 var app = express();
-var PouchDB = require('pouchdb');
-var sensor = require("node-dht-sensor");
 
-//console.log('hello wordl');
+//setInterval(function () { insertData("airSensor"); }, 600000);
 
 
+app.get('/MyState', function (req, res) {
+	//TODO: Génériser les capteurs et leur gestion.
+	let sensorManager = new manageSensor();
+	res.send(sensorManager.getState());
+
+});
 
 
-//setInterval(function(){logIt();}, 5000);
+function insertData(sensorType) {
 
-setInterval(function(){insertData("airSensor");}, 600000);
-
-
-function logIt (){
-	sensor.read(11, 2, function(err, temperature, humidity){
-
-		if(!err){
-			console.log('temp: ' + temperature + ', humidity: ' + humidity + '%');
-		}
-	});
-}
-
-
-//app.get('/MyState', function(req, res){
-
-//});
-
-
-
-function insertData(sensorType){
-
-	sensor.read(11, 2, function(err, temperature, humidity){
+	sensor.read(11, 2, function (err, temperature, humidity) {
 		console.log("inserting");
-			try{
+		try {
 			var today = new Date();
-			var time = today.getFullYear()+'_'+(today.getMonth()+1) + "_"+ today.getHours() +"_" + today.getMinutes();
+			var time = today.getFullYear() + '_' + (today.getMonth() + 1) + "_" + today.getHours() + "_" + today.getMinutes();
 			var db = new PouchDB('http://127.0.0.1:5984/sensor_data');
 			var doc = {
-			"_id": time, 
-			"type": sensorType,
-			"temp": temperature,
-			"humidity": humidity,
-			"jour": today.getDay(),
-			"heure": today.getHours(),
-			"minute": today.getMinutes()
+				"_id": time,
+				"type": sensorType,
+				"temp": temperature,
+				"humidity": humidity,
+				"jour": today.getDay(),
+				"heure": today.getHours(),
+				"minute": today.getMinutes()
 			};
 
+
+
 			db.put(doc);
-		}catch(err){
+		} catch (err) {
 			throw err;
 		}
 	});
-	
+
 }
 
-//insertData("airSensor");
+function getValueSensor(sensorType) {
+	if (sensorType === "groundSensor") {
 
 
+		gpiop.setup(3, gpiop.DIR_IN)
+			.then(() => {
+				return gpiop.read(3, function (err, value) {
+					if (!err) {
+						console.log(value);
+					}
+				});
+			})
+			.catch((err) => {
+				console.log('Error: ', err.toString())
+			})
+	} else if (sensorType === "airSensor") {
 
-//app.listen(8081);
+	}
+}
+
+getValueSensor("groundSensor");
+
+app.listen(8081);
 
 
