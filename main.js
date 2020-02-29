@@ -2,7 +2,7 @@ var express = require('express');
 var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
-var sensorManager = require('Managers/manageSensor.js');
+//var sensorManager = require('Managers/manageSensor.js');
 var gpiop = require('rpi-gpio').promise;
 
 var app = express();
