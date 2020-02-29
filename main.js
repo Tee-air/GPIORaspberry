@@ -8,7 +8,7 @@ const gpio = require('raspi-gpio');
 
 var app = express();
 
-//setInterval(function () { insertData("airSensor"); }, 600000);
+setInterval(function () { insertData("airSensor"); }, 600000);
 
 
 app.get('/MyState', function (req, res) {
