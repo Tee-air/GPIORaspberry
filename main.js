@@ -56,8 +56,7 @@ function readSensor2() {
 	raspi.init(() => {
 
 		const input = new gpio.DigitalInput({
-			pin: 'P1-5',
-			pullResistor: gpio.PULL_UP
+			pin: 7
 		});
 
 		console.log(input.read());
