@@ -1,21 +1,21 @@
-var express = require('express');
+//var express = require('express');
 var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
 //var sensorManager = require('Managers/manageSensor.js');
 var gpiop = require('rpi-gpio');
 
-var app = express();
+//var app = express();
 
 //setInterval(function () { insertData("airSensor"); }, 600000);
 
 
-app.get('/MyState', function (req, res) {
-	//TODO: Génériser les capteurs et leur gestion.
-	let sensorManager = new manageSensor();
-	res.send(sensorManager.getState());
+//app.get('/MyState', function (req, res) {
+//TODO: Génériser les capteurs et leur gestion.
+//let sensorManager = new manageSensor();
+//res.send(sensorManager.getState());
 
-});
+//});
 
 
 function insertData(sensorType) {
@@ -71,6 +71,6 @@ function getValueSensor(sensorType) {
 
 console.logt(getValueSensor("groundSensor"));
 
-app.listen(8081);
+//app.listen(8081);
 
 
