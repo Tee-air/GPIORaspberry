@@ -3,8 +3,7 @@ var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
 //var sensorManager = require('Managers/manageSensor.js');
-const raspi = require('raspi');
-const gpio = require('raspi-gpio');
+
 
 var app = express();
 
@@ -50,11 +49,15 @@ function insertData(sensorType) {
 
 
 function readSensor2() {
+	const raspi = require('raspi');
+	const gpio = require('raspi-gpio');
+
 
 	raspi.init(() => {
 
 		const input = new gpio.DigitalInput({
-			pin: 'P1-5'
+			pin: 'P1-5',
+			pullResistor: gpio.PULL_UP
 		});
 
 		console.log(input.read());
