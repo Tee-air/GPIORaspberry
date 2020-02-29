@@ -3,7 +3,7 @@ var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
 //var sensorManager = require('Managers/manageSensor.js');
-var gpiop = require('rpi-gpio');
+//var gpiop = require('rpi-gpio');
 
 //var app = express();
 
@@ -69,7 +69,7 @@ function getValueSensor(sensorType) {
 	}
 }
 
-console.logt(getValueSensor("groundSensor"));
+//console.logt(getValueSensor("groundSensor"));
 
 //app.listen(8081);
 
