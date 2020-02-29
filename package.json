@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "node-dht-sensor": "^0.4.1",
     "pouchdb": "^7.2.1",
-    "rpi-gpio": "^2.1.5"
+    "raspi": "^6.0.1",
+    "raspi-gpio": "^6.2.2"
   }
 }
