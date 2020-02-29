@@ -59,7 +59,7 @@ function readSensor2() {
 			pin: 7
 		});
 
-		console.log(input.read());
+		console.log(input.value);
 	});
 }
 
