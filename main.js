@@ -50,10 +50,10 @@ function getValueSensor(sensorType) {
 	if (sensorType === "groundSensor") {
 
 
-		gpiop.setup(3, gpiop.DIR_IN, function (err) {
+		gpiop.setup(5, gpiop.DIR_IN, function (err) {
 
 			if (!err) {
-				return gpiop.read(3, function (err, value) {
+				return gpiop.read(5, function (err, value) {
 					if (!err) {
 						console.log(value);
 					}
