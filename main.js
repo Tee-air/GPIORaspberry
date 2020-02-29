@@ -3,7 +3,7 @@ var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
 //var sensorManager = require('Managers/manageSensor.js');
-var gpiop = require('rpi-gpio').promise;
+var gpiop = require('rpi-gpio');
 
 var app = express();
 
@@ -50,23 +50,26 @@ function getValueSensor(sensorType) {
 	if (sensorType === "groundSensor") {
 
 
-		gpiop.setup(3, gpiop.DIR_IN)
-			.then(() => {
+		gpiop.setup(3, gpiop.DIR_IN, function (err) {
+
+			if (!err) {
 				return gpiop.read(3, function (err, value) {
 					if (!err) {
 						console.log(value);
 					}
 				});
-			})
-			.catch((err) => {
+			} else {
 				console.log('Error: ', err.toString())
-			})
+			}
+
+		});
+
 	} else if (sensorType === "airSensor") {
 
 	}
 }
 
-getValueSensor("groundSensor");
+console.logt(getValueSensor("groundSensor"));
 
 app.listen(8081);
 
