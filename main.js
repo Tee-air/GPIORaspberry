@@ -3,45 +3,60 @@ var PouchDB = require('pouchdb');
 //Module a 
 var sensor = require('node-dht-sensor');
 //var sensorManager = require('Managers/manageSensor.js');
+var EventEmitter = require('events').EventEmitter;
+
+var event = new EventEmitter();
 
 
 //var app = express();
 
-setInterval(function () { insertData("airSensor"); }, 600000);
+setInterval(function () { getValueSensor("airSensor", true); }, 3600000); //Toute les heures
 
+setInterval(function () { getValueSensor("airSensor", false); }, 600000);
 
 //app.get('/MyState', function (req, res) {
 //TODO: Génériser les capteurs et leur gestion.
 //let sensorManager = new manageSensor();
 //res.send(sensorManager.getState());
-
 //});
 
+event.on('addValue', addValue);
 
-function insertData(sensorType) {
+
+var addValue = function addValue(temperature, humidity) {
+	console.log("inserting");
+	try {
+		var today = new Date();
+		var time = today.getFullYear() + '_' + (today.getMonth() + 1) + "_" + today.getHours() + "_" + today.getMinutes();
+		var db = new PouchDB('http://127.0.0.1:5984/sensor_data');
+		var doc = {
+			"_id": time,
+			"type": sensorType,
+			"temp": temperature,
+			"humidity": humidity,
+			"jour": today.getDay(),
+			"heure": today.getHours(),
+			"minute": today.getMinutes()
+		};
+
+
+
+		db.put(doc);
+	} catch (err) {
+		throw err;
+	}
+}
+
+function getValueSensor(sensorType, isInsert) {
 
 	sensor.read(11, 2, function (err, temperature, humidity) {
-		console.log("inserting");
-		try {
-			var today = new Date();
-			var time = today.getFullYear() + '_' + (today.getMonth() + 1) + "_" + today.getHours() + "_" + today.getMinutes();
-			var db = new PouchDB('http://127.0.0.1:5984/sensor_data');
-			var doc = {
-				"_id": time,
-				"type": sensorType,
-				"temp": temperature,
-				"humidity": humidity,
-				"jour": today.getDay(),
-				"heure": today.getHours(),
-				"minute": today.getMinutes()
-			};
+		if (isInsert) {
+			event.emit('addValue', temperature, humidity);
+		} else {
 
-
-
-			db.put(doc);
-		} catch (err) {
-			throw err;
 		}
+
+
 	});
 
 }
