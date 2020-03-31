@@ -14,13 +14,10 @@ setInterval(function () { getValueSensor("airSensor", true); }, 3600000); //Tout
 
 setInterval(function () { getValueSensor("airSensor", false); }, 600000);
 
-//app.get('/MyState', function (req, res) {
-//TODO: Génériser les capteurs et leur gestion.
-//let sensorManager = new manageSensor();
-//res.send(sensorManager.getState());
-//});
-
 event.on('addValue', addValue);
+event.on('openVanne', openVanne);
+//event.on('addValue', addValue);
+event.on('readValueData', readValueData);
 
 
 var addValue = function addValue(temperature, humidity) {
@@ -47,17 +44,37 @@ var addValue = function addValue(temperature, humidity) {
 	}
 }
 
+function readValueData(typeCulture, temperatureActuelle, humidtyActuelle) {
+	console.log("reading");
+	try {
+		var db = new PouchDB('http://127.0.0.1:5984/profil_culture');
+		db.get(typeCulture).then(function (doc) {
+			if (doc.temperatureMax <= temperatureActuelle) {
+				//TODO allumer le ventilateur.
+			}
+			if (doc.humidtyMax <= humidtyActuelle) {
+				//TODO allumer le ventilateur.
+			}
+		});
+	} catch (err) {
+		throw err;
+	}
+}
+
 function getValueSensor(sensorType, isInsert) {
 
 	sensor.read(11, 2, function (err, temperature, humidity) {
 		if (isInsert) {
 			event.emit('addValue', temperature, humidity);
 		} else {
-
+			event.emit('readValueData', typeCulture, temperature, humidity);
 		}
 
 
 	});
+
+	isTheSoilWet();
+
 
 }
 
@@ -74,41 +91,30 @@ function isTheSoilWet() {
 		const input = new gpio.DigitalInput({
 			pin: 7
 		});
-		if (input.value === 1) {
-			result = true;
-		} else {
-			result = false;
+		if (input.value === 0) {
+			event.emit('openVanne');
 		}
+	});
+}
+
+
+function openVanne() {
+	//TODO: Test cette partie du code
+	const raspi = require('raspi');
+	const gpio = require('raspi-gpio');
+	let result;
+
+	raspi.init(() => {
+		const output = new gpio.DigitalOutput({
+			pin: 11
+		});
+		output.write(1);
 
 		console.log(result);
 	});
 }
 
-function getValueSensor(sensorType) {
-	if (sensorType === "groundSensor") {
-
-
-		gpiop.setup(5, gpiop.DIR_IN, function (err) {
-
-			if (!err) {
-				return gpiop.read(5, function (err, value) {
-					if (!err) {
-						console.log(value);
-					}
-				});
-			} else {
-				console.log('Error: ', err.toString())
-			}
-
-		});
-
-	} else if (sensorType === "airSensor") {
-
-	}
-}
-
-isTheSoilWet()
-//console.logt(getValueSensor("groundSensor"));
+//isTheSoilWet()
 
 //app.listen(8081);
 
